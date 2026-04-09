@@ -15,6 +15,9 @@ class Task(Entry):
     def complete(self):
         self.completed = True
         self.log('Task completed')
+        
+    def get_title(self):
+        return self.title
 
 class Subtask(Task):
     def __init__(self, title, description=''):
