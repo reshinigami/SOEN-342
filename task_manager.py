@@ -28,10 +28,45 @@ class TaskManager:
     def get_projects(self):
         return self.projects
     
+
+    
     def create_task(self, title, description='', priority=1, due_date=None, tags=None):
         task = Task(title, description, priority, due_date, tags)
         self.tasks.append(task)
+        self.history.log('Created task', title)
         return task
+    def complete_task(self, task_title):
+        task = self.get_task(task_title)
+        if task:
+            task.complete()
+            self.history.log('Completed task', task_title)
+        else:
+            print(f'Task "{task_title}" not found.')
+    
+    def cancel_task(self, task_title):
+        task = self.get_task(task_title)
+        if task:
+            task.cancel()
+            self.history.log('Cancelled task', task_title)
+        else:
+            print(f'Task "{task_title}" not found.')
+    
+    def update_task(self, task_title, description=None, priority=None, due_date=None):
+        task = self.get_task(task_title)
+        if task:
+            if description is not None:
+                task.update_description(description)
+                self.history.log('Updated description', task_title)
+            if priority is not None:
+                task.update_priority(priority)
+                self.history.log(f'Updated priority to {priority}', task_title)
+            if due_date is not None:
+                task.update_due_date(due_date)
+                self.history.log(f'Updated due date to {due_date}', task_title)
+        else:
+            print(f'Task "{task_title}" not found.')
+
+
 
     def get_task(self, task_title):
         for task in self.tasks:
